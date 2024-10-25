@@ -1,0 +1,22 @@
+/**
+ * @description Find tests that call pressActionKey
+ * @kind problem
+ * @id javascript/find-tests-calling-pressActionKey
+ * @problem.severity recommendation
+ */
+
+import javascript
+
+/**
+ * Holds if the given function calls another function with the specified name.
+ */
+predicate callsFunctionWithName(Function caller, string name) {
+  exists(CallExpression call | 
+    call.getTarget() = caller and 
+    call.getTarget().getName() = name
+  )
+}
+
+from Function test
+where test.isTest() and callsFunctionWithName(test, "pressActionKey")
+select test, "Test function calls 'pressActionKey'"
